@@ -1,0 +1,7 @@
+{
+  "name": "websocket-chat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Marcin Stalmach <marcin.stalmach123@outlook.com>",
+  "license": "MIT"
+}
