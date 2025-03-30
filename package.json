@@ -3,5 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Marcin Stalmach <marcin.stalmach123@outlook.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
 }
