@@ -7,6 +7,8 @@ const loginForm = document.querySelector('#welcome-form');
 
 let userName = '';
 
+const socket = io();
+
 const login = (e) => {
   e.preventDefault();
   const enteredName = userNameInput.value.trim();
@@ -16,6 +18,7 @@ const login = (e) => {
     userName = enteredName;
     loginForm.classList.remove('show');        
     messagesSection.classList.add('show');
+    socket.emit('join', userName); 
   }
 };
 
@@ -24,6 +27,7 @@ loginForm.addEventListener('submit', login);
 function addMessage(author, content) {
   const message = document.createElement('li');
   message.classList.add('message', 'message--received');
+  if (author === 'Chat Bot') message.classList.add('message--bot');
   if (author === userName) message.classList.add('message--self');
   message.innerHTML = `
     <h3 class="message__author">${author === userName ? 'You' : author}</h3>
@@ -41,8 +45,19 @@ const sendMessage = (e) => {
     alert('You must write something!');
   } else {
     addMessage(userName, messageContent);
+    socket.emit('message', { author: userName, content: messageContent });
     messageContentInput.value = '';
   }
 };
 
 addMessageForm.addEventListener('submit', sendMessage);
+
+socket.on('message', ({ author, content }) => addMessage(author, content));
+
+socket.on('newUser', (newUserName) => {
+  addMessage('Chat Bot', `${newUserName} has joined the conversation!`);
+});
+
+socket.on('removeUser', (leftUserName) => {
+  addMessage('Chat Bot', `${leftUserName} has left the conversation... :(`);
+});
